@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Household Services Platform - Your Trusted Home Service Partner</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero-section {
+            background: #0056b3 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s;
+            animation-fill-mode: both;
+        }
+        
+        .btn-hero {
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 180px;
+        }
+        
+        .btn-hero-primary {
+            background: white;
+            color: #0056b3;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+        
+        .btn-hero-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-hero-secondary:hover {
+            background: white;
+            color: #0056b3;
+        }
+        
+        .stats-section {
+            padding: 80px 0;
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 30px;
+            background: linear-gradient(135deg, #0056b3 0%, #004494 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 86, 179, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .services-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid #e3f2fd;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #0056b3;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .service-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #0056b3;
+        }
+        
+        .service-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .how-it-works {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .step-card {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0056b3 0%, #004494 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+        
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            background: rgba(248, 249, 250, 0.95);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .testimonial-role {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .final-cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #0056b3 0%, #004494 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-hero {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-content">
+            <h1 class="hero-title">Your Trusted Home Service Partner</h1>
+            <p class="hero-subtitle">Connect with verified professionals for all your household needs. From cleaning to repairs, we've got you covered with quality service you can trust.</p>
+            <div class="cta-buttons">
+                <a href="register.php" class="btn-hero btn-hero-primary">👤 Book a Service</a>
+                <a href="register.php" class="btn-hero btn-hero-secondary">🔧 Become a Worker</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Verified Workers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">25,000+</div>
+                    <div class="stat-label">Services Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9★</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Professional services for every household need, all performed by verified and experienced professionals</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <span class="service-icon">🧹</span>
+                    <h3 class="service-title">Cleaning</h3>
+                    <p class="service-description">Deep cleaning, regular maintenance, and specialty cleaning services for a spotless home</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">👕</span>
+                    <h3 class="service-title">Laundry</h3>
+                    <p class="service-description">Wash, dry, fold, and iron services to keep your clothes fresh</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">🛒</span>
+                    <h3 class="service-title">Grocery Runs</h3>
+                    <p class="service-description">Personal shopping and grocery delivery for your convenience</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">🔧</span>
+                    <h3 class="service-title">Minor Repairs</h3>
+                    <p class="service-description">Professional repairs, installations, and maintenance services</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">�</span>
+                    <h3 class="service-title">Babysitting</h3>
+                    <p class="service-description">Trusted childcare services for your peace of mind</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">�‍🍳</span>
+                    <h3 class="service-title">Cooking</h3>
+                    <p class="service-description">Personal chefs, meal prep, and cooking services for busy households</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Get your household services done in 4 simple steps</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Sign Up</h3>
+                    <p class="step-description">Create your free account as a user or worker in less than 2 minutes</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Book Service</h3>
+                    <p class="step-description">Choose your service, select date and time, and provide details</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Get Matched</h3>
+                    <p class="step-description">We connect you with verified workers who match your needs</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Enjoy Service</h3>
+                    <p class="step-description">Relax while professionals take care of your household needs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <p class="section-subtitle">Real experiences from people who trust us with their homes</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The cleaning service was exceptional! The worker was professional, thorough, and left my home sparkling clean. Will definitely book again!"</p>
+                    <div class="testimonial-author">Sarah Johnson</div>
+                    <div class="testimonial-role">Happy Customer</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As a plumber, this platform has helped me find consistent work. The booking system is smooth and customers are always respectful."</p>
+                    <div class="testimonial-author">Mike Chen</div>
+                    <div class="testimonial-role">Verified Worker</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I needed urgent electrical work and got connected with a professional within hours. The service was reliable and reasonably priced."</p>
+                    <div class="testimonial-author">Emily Rodriguez</div>
+                    <div class="testimonial-role">Happy Customer</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Ready to Get Started?</h2>
+            <p class="section-subtitle" style="color: white; opacity: 0.9;">Join thousands of satisfied customers and workers today</p>
+            <div class="cta-buttons">
+                <a href="register.php" class="btn-hero btn-hero-primary">Get Started as User</a>
+                <a href="register.php" class="btn-hero btn-hero-secondary">Join as Worker</a>
+            </div>
+            <div style="margin-top: 30px;">
+                <p style="opacity: 0.8;">Already have an account? <a href="login.php" style="color: white; text-decoration: underline;">Login here</a></p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

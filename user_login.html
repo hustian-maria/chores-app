@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login - Household Services</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">🏠 Household Services</div>
+            <nav>
+                <ul>
+                    <li><a href="user_register.html">User Register</a></li>
+                    <li><a href="worker_register.html">Worker Register</a></li>
+                    <li><a href="worker_login.html">Worker Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <h2 class="text-center mb-20">User Login</h2>
+            
+            <form action="login.php" method="POST">
+                <input type="hidden" name="form_type" value="user">
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn">Login</button>
+                    <a href="user_register.html" class="btn btn-secondary">Create Account</a>
+                </div>
+            </form>
+            
+            <div class="text-center mt-20">
+                <p><a href="worker_login.html">Are you a worker? Login here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

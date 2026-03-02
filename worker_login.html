@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Login - Household Services</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-btn active" onclick="setTheme('light')">☀️ Light</button>
+        <button class="theme-btn" onclick="setTheme('dark')">🌙 Dark</button>
+    </div>
+    <header>
+        <div class="header-content">
+            <div class="logo">🏠 Household Services</div>
+            <nav>
+                <ul>
+                    <li><a href="user_register.html">User Register</a></li>
+                    <li><a href="user_login.html">User Login</a></li>
+                    <li><a href="worker_register.html">Worker Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <h2 class="text-center mb-20">Worker Login</h2>
+            
+            <form action="login.php" method="POST">
+                <input type="hidden" name="form_type" value="worker">
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn">Login</button>
+                    <a href="worker_register.html" class="btn btn-secondary">Create Account</a>
+                </div>
+            </form>
+            
+            <div class="text-center mt-20">
+                <p><a href="user_login.html">Are you a user? Login here</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Theme switching functionality
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(savedTheme)) {
+                    btn.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

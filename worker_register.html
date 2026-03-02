@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Registration - Household Services</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">🏠 Household Services</div>
+            <nav>
+                <ul>
+                    <li><a href="user_register.html">User Register</a></li>
+                    <li><a href="user_login.html">User Login</a></li>
+                    <li><a href="worker_login.html">Worker Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="text-center mb-20">Worker Registration</h2>
+            
+            <form action="register.php" method="POST">
+                <input type="hidden" name="form_type" value="worker">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select Your Skills (Choose all that apply) *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cleaning" name="skills[]" value="cleaning">
+                            <label for="cleaning">Cleaning</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="laundry" name="skills[]" value="laundry">
+                            <label for="laundry">Laundry</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="grocery_runs" name="skills[]" value="grocery_runs">
+                            <label for="grocery_runs">Grocery Runs</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="minor_repairs" name="skills[]" value="minor_repairs">
+                            <label for="minor_repairs">Minor Repairs</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="babysitting" name="skills[]" value="babysitting">
+                            <label for="babysitting">Babysitting</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cooking" name="skills[]" value="cooking">
+                            <label for="cooking">Cooking</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn">Register as Worker</button>
+                    <a href="worker_login.html" class="btn btn-secondary">Already have an account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const checkboxes = document.querySelectorAll('input[name="skills[]"]:checked');
+            if (checkboxes.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one skill');
+            }
+        });
+    </script>
+</body>
+</html>

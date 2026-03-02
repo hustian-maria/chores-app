@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration - Household Services</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">🏠 Household Services</div>
+            <nav>
+                <ul>
+                    <li><a href="user_login.html">User Login</a></li>
+                    <li><a href="worker_register.html">Worker Register</a></li>
+                    <li><a href="worker_login.html">Worker Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="text-center mb-20">User Registration & Booking</h2>
+            
+            <form action="register.php" method="POST">
+                <input type="hidden" name="form_type" value="user">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3"></textarea>
+                </div>
+                
+                <h3>Booking Details</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service">Service Type *</label>
+                        <select id="service" name="service" required>
+                            <option value="">Select a service</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="laundry">Laundry</option>
+                            <option value="grocery_runs">Grocery Runs</option>
+                            <option value="minor_repairs">Minor Repairs</option>
+                            <option value="babysitting">Babysitting</option>
+                            <option value="cooking">Cooking</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Preferred Date *</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Preferred Time *</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn">Register & Book Service</button>
+                    <a href="user_login.html" class="btn btn-secondary">Already have an account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set minimum date to today
+        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
