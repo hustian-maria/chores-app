@@ -53,24 +53,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $insert_user->bind_param("sssss", $name, $email, $phone, $address, $hashed_password);
                 
                 if ($insert_user->execute()) {
-                    // Create booking
-                    $insert_booking = $db->prepare("INSERT INTO bookings (user_email, service, date, time) VALUES (?, ?, ?, ?)");
-                    $insert_booking->bind_param("ssss", $email, $service, $date, $time);
+                    $_SESSION['user_email'] = $email;
+                    $_SESSION['user_name'] = $name;
+                    $_SESSION['selected_service'] = $service;
+                    $_SESSION['selected_date'] = $date;
+                    $_SESSION['selected_time'] = $time;
+                    $message = "Registration successful! Redirecting to worker selection...";
+                    $message_type = "success";
                     
-                    if ($insert_booking->execute()) {
-                        $_SESSION['user_email'] = $email;
-                        $_SESSION['user_name'] = $name;
-                        $message = "Registration successful! Your booking has been created.";
-                        $message_type = "success";
-                        
-                        // Redirect to user dashboard after 2 seconds
-                        header("refresh:2;url=user_dashboard.php");
-                    } else {
-                        $message = "Registration successful but booking failed. Please contact support.";
-                        $message_type = "error";
-                    }
+                    // Redirect to worker selection after 2 seconds
+                    header("refresh:2;url=worker_selection.php?service=" . urlencode($service));
                 } else {
-                    $message = "Registration failed. Please try again.";
+                    $message = "Registration successful but failed to proceed. Please contact support.";
                     $message_type = "error";
                 }
             }

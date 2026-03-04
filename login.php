@@ -103,8 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="logo">🏠 Household Services</div>
             <nav>
                 <ul>
-                    <li><a href="user_register.html">User Register</a></li>
-                    <li><a href="worker_register.html">Worker Register</a></li>
+                    <li><a href="register.php">User Register</a></li>
+                    <li><a href="register.php">Worker Register</a></li>
                 </ul>
             </nav>
         </div>
@@ -128,9 +128,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a href="javascript:history.back()" class="btn">Go Back</a>
                         <br><br>
                         <p>
-                            <a href="user_login.html">User Login</a> | 
-                            <a href="worker_login.html">Worker Login</a> | 
-                            <a href="user_register.html">Register</a>
+                            <a href="login.php">User Login</a> | 
+                            <a href="login.php">Worker Login</a> | 
+                            <a href="register.php">Register</a>
                         </p>
                     <?php endif; ?>
                 </p>

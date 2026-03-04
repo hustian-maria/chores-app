@@ -21,7 +21,7 @@ function getServiceIcon($service) {
 // Start session and check if user is logged in
 session_start();
 if (!isset($_SESSION['user_email'])) {
-    header("Location: user_login.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -80,15 +80,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Household Services</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">🏠 Household Services</div>
+            <div class="logo"><ion-icon name="home-outline"></ion-icon> Household Services</div>
             <nav>
                 <ul>
                     <li><a href="user_dashboard.php">Dashboard</a></li>
-                    <li><a href="user_register.html">Book New Service</a></li>
+                    <li><a href="register.php">Book New Service</a></li>
                     <li><a href="settings.php">Settings</a></li>
                     <li><a href="logout.php">Logout</a></li>
                 </ul>
@@ -108,7 +110,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="card">
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <div class="avatar-circle">👤</div>
+                    <?php 
+                        $profile_pic = $user['profile_picture'] ?? null;
+                        if ($profile_pic && file_exists('uploads/profile_pictures/' . $profile_pic)) {
+                            echo '<img src="uploads/profile_pictures/' . $profile_pic . '" alt="Profile Picture" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #0056b3;">';
+                        } else {
+                            echo '<ion-icon name="person-outline" style="font-size: 40px; color: #666;"></ion-icon>';
+                        }
+                    ?>
                 </div>
                 <div class="profile-details">
                     <h2><?php echo htmlspecialchars($user_name); ?></h2>
@@ -118,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <a href="user_register.html" class="btn btn-sm">Book New Service</a>
+                    <a href="register.php" class="btn btn-sm">Book New Service</a>
                 </div>
             </div>
             <div class="profile-info-grid">
@@ -137,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="card">
             <h3>Quick Actions</h3>
             <div class="quick-actions-grid">
-                <a href="user_register.html" class="action-card">
+                <a href="register.php" class="action-card">
                     <div class="action-icon">📅</div>
                     <h4>Book New Service</h4>
                     <p>Schedule a new household service</p>
@@ -217,25 +226,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php 
                     $bookings_result->data_seek(0); // Reset result pointer again
                     while ($booking = $bookings_result->fetch_assoc()): 
-                        // Get worker name if assigned
+                        // Get worker name and phone if assigned
                         $worker_name = 'Not assigned';
+                        $worker_phone = 'Not provided';
                         if (!empty($booking['worker_email'])) {
-                            $worker_query = $db->prepare("SELECT name FROM workers WHERE email = ?");
+                            $worker_query = $db->prepare("SELECT name, phone FROM workers WHERE email = ?");
                             $worker_query->bind_param("s", $booking['worker_email']);
                             $worker_query->execute();
                             $worker_result = $worker_query->get_result();
                             if ($worker = $worker_result->fetch_assoc()) {
                                 $worker_name = htmlspecialchars($worker['name']);
+                                $worker_phone = htmlspecialchars($worker['phone']);
                             }
                         }
                     ?>
                         <div class="booking-card" data-status="<?php echo $booking['status']; ?>">
-                            <div class="booking-header">
+                            <div class="booking-info">
                                 <div class="service-info">
                                     <span class="service-icon"><?php echo getServiceIcon($booking['service']); ?></span>
                                     <div>
                                         <h4><?php echo htmlspecialchars(ucfirst($booking['service'])); ?></h4>
-                                        <p class="booking-id">Booking #<?php echo $booking['id']; ?></p>
+                                        <p class="customer-name"><ion-icon name="person-outline"></ion-icon> <?php echo htmlspecialchars($worker_name); ?></p>
                                     </div>
                                 </div>
                                 <div class="booking-status">
@@ -246,16 +257,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="booking-details">
                                 <div class="detail-item">
-                                    <span class="detail-label">📅 Date:</span>
+                                    <span class="detail-label"><ion-icon name="calendar-outline"></ion-icon> Date:</span>
                                     <span><?php echo date('M d, Y', strtotime($booking['date'])); ?></span>
                                 </div>
                                 <div class="detail-item">
-                                    <span class="detail-label">⏰ Time:</span>
+                                    <span class="detail-label"><ion-icon name="time-outline"></ion-icon> Time:</span>
                                     <span><?php echo date('h:i A', strtotime($booking['time'])); ?></span>
                                 </div>
                                 <div class="detail-item">
-                                    <span class="detail-label">👷 Worker:</span>
-                                    <span><?php echo $worker_name; ?></span>
+                                    <span class="detail-label"><ion-icon name="call-outline"></ion-icon> Worker Phone:</span>
+                                    <span><?php echo htmlspecialchars($worker_phone ?: 'Not provided'); ?></span>
                                 </div>
                             </div>
                             <div class="booking-actions">
@@ -270,7 +281,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <span class="text-muted">✓ Worker assigned</span>
                                 <?php elseif ($booking['status'] == 'completed'): ?>
                                     <span class="text-success">✓ Completed</span>
-                                    <button class="btn btn-success btn-sm" onclick="showReviewForm(<?php echo $booking['id']; ?>)">Leave Review</button>
+                                    <a href="rate_worker.php?worker=<?php echo urlencode($booking['worker_email']); ?>&booking=<?php echo $booking['id']; ?>" class="btn btn-success btn-sm">
+                                        ⭐ Rate Worker
+                                    </a>
                                 <?php elseif ($booking['status'] == 'cancelled'): ?>
                                     <span class="text-danger">✗ Cancelled</span>
                                 <?php endif; ?>
@@ -301,10 +314,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             <?php else: ?>
                 <div class="empty-state">
-                    <div class="empty-icon">📋</div>
+                    <div class="empty-icon"><ion-icon name="document-text-outline"></ion-icon></div>
                     <h4>No bookings yet</h4>
                     <p>You haven't made any bookings yet. Book your first service now!</p>
-                    <a href="user_register.html" class="btn">Book Your First Service</a>
+                    <a href="register.php" class="btn">Book Your First Service</a>
                 </div>
             <?php endif; ?>
         </div>

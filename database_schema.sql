@@ -11,6 +11,7 @@ CREATE TABLE users (
     phone VARCHAR(20),
     address TEXT,
     password VARCHAR(255) NOT NULL,
+    profile_picture VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -22,6 +23,7 @@ CREATE TABLE workers (
     phone VARCHAR(20),
     password VARCHAR(255) NOT NULL,
     skills TEXT NOT NULL,
+    profile_picture VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -38,6 +40,38 @@ CREATE TABLE bookings (
     FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE,
     FOREIGN KEY (worker_email) REFERENCES workers(email) ON DELETE SET NULL
 );
+
+-- Ratings table
+CREATE TABLE ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_email VARCHAR(100) NOT NULL,
+    worker_email VARCHAR(100) NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    review TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE,
+    FOREIGN KEY (worker_email) REFERENCES workers(email) ON DELETE CASCADE,
+    UNIQUE (user_email, worker_email)
+);
+
+-- Service Pricing table (Cameroon XAF currency)
+CREATE TABLE service_pricing (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    service VARCHAR(100) UNIQUE NOT NULL,
+    base_price DECIMAL(10,2) NOT NULL,
+    urgent_surcharge DECIMAL(10,2) DEFAULT 0.00,
+    currency VARCHAR(3) DEFAULT 'XAF',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert Cameroon pricing (XAF)
+INSERT INTO service_pricing (service, base_price, urgent_surcharge, currency) VALUES
+('cleaning', 15000.00, 5000.00, 'XAF'),
+('laundry', 8000.00, 3000.00, 'XAF'),
+('grocery_runs', 12000.00, 4000.00, 'XAF'),
+('minor_repairs', 20000.00, 8000.00, 'XAF'),
+('babysitting', 18000.00, 6000.00, 'XAF'),
+('cooking', 16000.00, 4500.00, 'XAF');
 
 -- Insert sample data (optional)
 -- INSERT INTO users (name, email, phone, address, password) VALUES 

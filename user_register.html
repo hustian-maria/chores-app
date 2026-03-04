@@ -58,10 +58,49 @@
                 
                 <h3>Booking Details</h3>
                 
+                <div class="pricing-info" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #0056b3;">
+                    <h4 style="color: #0056b3; margin-bottom: 15px;">Service Pricing</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div class="price-item">
+                            <strong>Cleaning:</strong><br>
+                            <span>Standard: XAF 15,000</span><br>
+                            <span>Same-day: XAF 20,000</span>
+                        </div>
+                        <div class="price-item">
+                            <strong>Laundry:</strong><br>
+                            <span>Standard: XAF 8,000</span><br>
+                            <span>Same-day: XAF 11,000</span>
+                        </div>
+                        <div class="price-item">
+                            <strong>Grocery Runs:</strong><br>
+                            <span>Standard: XAF 12,000</span><br>
+                            <span>Same-day: XAF 16,000</span>
+                        </div>
+                        <div class="price-item">
+                            <strong>Minor Repairs:</strong><br>
+                            <span>Standard: XAF 20,000</span><br>
+                            <span>Same-day: XAF 28,000</span>
+                        </div>
+                        <div class="price-item">
+                            <strong>Babysitting:</strong><br>
+                            <span>Standard: XAF 18,000</span><br>
+                            <span>Same-day: XAF 24,000</span>
+                        </div>
+                        <div class="price-item">
+                            <strong>Cooking:</strong><br>
+                            <span>Standard: XAF 16,000</span><br>
+                            <span>Same-day: XAF 20,500</span>
+                        </div>
+                    </div>
+                    <p style="color: #666; font-size: 14px; margin-top: 15px;">
+                        <em>💡 Note: Same-day service (within 24 hours) includes additional surcharge for urgent processing.</em>
+                    </p>
+                </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label for="service">Service Type *</label>
-                        <select id="service" name="service" required>
+                        <select id="service" name="service" required onchange="updatePricingInfo()">
                             <option value="">Select a service</option>
                             <option value="cleaning">Cleaning</option>
                             <option value="laundry">Laundry</option>
@@ -78,13 +117,22 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="time">Preferred Time *</label>
-                    <input type="time" id="time" name="time" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="time">Preferred Time *</label>
+                        <input type="time" id="time" name="time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Service Type:</label>
+                        <div id="selected-pricing" style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 10px; text-align: center; font-weight: 600; color: #0056b3;">
+                            Select a service to see pricing
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-actions">
-                    <button type="submit" class="btn">Register & Book Service</button>
+                    <button type="submit" class="btn">Register & Continue to Worker Selection</button>
                     <a href="user_login.html" class="btn btn-secondary">Already have an account?</a>
                 </div>
             </form>
@@ -94,6 +142,37 @@
     <script>
         // Set minimum date to today
         document.getElementById('date').min = new Date().toISOString().split('T')[0];
+        
+        // Pricing information
+        const pricingData = {
+            'cleaning': { standard: 'XAF 15,000', urgent: 'XAF 20,000' },
+            'laundry': { standard: 'XAF 8,000', urgent: 'XAF 11,000' },
+            'grocery_runs': { standard: 'XAF 12,000', urgent: 'XAF 16,000' },
+            'minor_repairs': { standard: 'XAF 20,000', urgent: 'XAF 28,000' },
+            'babysitting': { standard: 'XAF 18,000', urgent: 'XAF 24,000' },
+            'cooking': { standard: 'XAF 16,000', urgent: 'XAF 20,500' }
+        };
+        
+        function updatePricingInfo() {
+            const service = document.getElementById('service').value;
+            const pricingDiv = document.getElementById('selected-pricing');
+            
+            if (service && pricingData[service]) {
+                const pricing = pricingData[service];
+                pricingDiv.innerHTML = `
+                    <div class="price-item">
+                        <strong>${service.charAt(0).toUpperCase() + service.slice(1)}:</strong><br>
+                        <span>Standard: ${pricing.standard}</span><br>
+                        <span>Same-day: ${pricing.urgent}</span>
+                    </div>
+                `;
+            } else {
+                pricingDiv.innerHTML = 'Select a service to see pricing';
+            }
+        }
+        
+        // Initialize pricing info
+        updatePricingInfo();
     </script>
 </body>
 </html>

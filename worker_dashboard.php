@@ -8,26 +8,42 @@ if ($db->connect_error) {
 // Helper function to get service icon
 function getServiceIcon($service) {
     $icons = [
-        'cleaning' => '🧹',
-        'laundry' => '👕',
-        'grocery_runs' => '🛒',
-        'minor_repairs' => '�',
-        'babysitting' => '👶',
-        'cooking' => '�‍🍳'
+        'cleaning' => '<ion-icon name="broom-outline"></ion-icon>',
+        'laundry' => '<ion-icon name="shirt-outline"></ion-icon>',
+        'grocery_runs' => '<ion-icon name="cart-outline"></ion-icon>',
+        'minor_repairs' => '<ion-icon name="build-outline"></ion-icon>',
+        'babysitting' => '<ion-icon name="child-outline"></ion-icon>',
+        'cooking' => '<ion-icon name="restaurant-outline"></ion-icon>'
     ];
-    return $icons[$service] ?? '🏠';
+    return $icons[$service] ?? '<ion-icon name="home-outline"></ion-icon>';
 }
+
+// Include pricing helper
+require_once 'pricing_helper.php';
 
 // Start session and check if worker is logged in
 session_start();
 if (!isset($_SESSION['worker_email'])) {
-    header("Location: worker_login.html");
+    header("Location: login.php");
     exit();
 }
 
 $worker_email = $_SESSION['worker_email'];
 $worker_name = $_SESSION['worker_name'];
-$worker_skills = $_SESSION['worker_skills'];
+$worker_skills = $_SESSION['worker_skills'] ?? '';
+
+// If worker_skills is empty, get it from database
+if (empty($worker_skills)) {
+    $worker_query = $db->prepare("SELECT skills FROM workers WHERE email = ?");
+    $worker_query->bind_param("s", $worker_email);
+    $worker_query->execute();
+    $worker_result = $worker_query->get_result();
+    if ($worker_result->num_rows > 0) {
+        $worker_data = $worker_result->fetch_assoc();
+        $worker_skills = $worker_data['skills'];
+        $_SESSION['worker_skills'] = $worker_skills;
+    }
+}
 
 // Get worker details
 $worker_query = $db->prepare("SELECT * FROM workers WHERE email = ?");
@@ -101,11 +117,136 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Worker Dashboard - Household Services</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .job-card {
+            background: white;
+            border: 1px solid #e3f2fd;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 86, 179, 0.15);
+            border-color: #0056b3;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .service-icon {
+            font-size: 32px;
+        }
+        
+        .service-info h4 {
+            margin: 0;
+            color: #0056b3;
+            font-size: 18px;
+        }
+        
+        .customer-name {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .job-priority {
+            text-align: right;
+        }
+        
+        .priority-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .priority-badge.urgent {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .priority-badge.normal {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .job-details {
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .pay-amount {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .job-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        @media (max-width: 768px) {
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .job-card {
+                padding: 15px;
+            }
+            
+            .job-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .job-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">🏠 Household Services</div>
+            <div class="logo"><ion-icon name="home-outline"></ion-icon> Household Services</div>
             <nav>
                 <ul>
                     <li><a href="worker_dashboard.php">Dashboard</a></li>
@@ -128,8 +269,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="card">
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <div class="avatar-circle">🔧</div>
-                </div>
+                        <?php 
+                            $profile_pic = $worker['profile_picture'] ?? null;
+                            if ($profile_pic && file_exists('uploads/profile_pictures/' . $profile_pic)) {
+                                echo '<img src="uploads/profile_pictures/' . $profile_pic . '" alt="Profile Picture" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #0056b3;">';
+                            } else {
+                                echo '<ion-icon name="person-outline" style="font-size: 40px; color: #666;"></ion-icon>';
+                            }
+                        ?>
+                    </div>
                 <div class="profile-details">
                     <h2><?php echo htmlspecialchars($worker_name); ?></h2>
                     <p class="profile-email"><?php echo htmlspecialchars($worker['email']); ?></p>
@@ -162,22 +310,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h3>Quick Actions</h3>
             <div class="quick-actions-grid">
                 <div class="action-card" onclick="refreshJobs()">
-                    <div class="action-icon">🔄</div>
+                    <div class="action-icon"><ion-icon name="refresh-outline"></ion-icon></div>
                     <h4>Refresh Jobs</h4>
                     <p>Check for new opportunities</p>
                 </div>
                 <div class="action-card" onclick="showEarnings()">
-                    <div class="action-icon">💰</div>
+                    <div class="action-icon"><ion-icon name="wallet-outline"></ion-icon></div>
                     <h4>My Earnings</h4>
                     <p>View your income summary</p>
                 </div>
                 <div class="action-card" onclick="showCalendar()">
-                    <div class="action-icon">📅</div>
+                    <div class="action-icon"><ion-icon name="calendar-outline"></ion-icon></div>
                     <h4>Work Calendar</h4>
                     <p>View your schedule</p>
                 </div>
                 <a href="logout.php" class="action-card">
-                    <div class="action-icon">🚪</div>
+                    <div class="action-icon"><ion-icon name="log-out-outline"></ion-icon></div>
                     <h4>Logout</h4>
                     <p>Sign out of your account</p>
                 </a>
@@ -215,7 +363,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p>Completed Jobs</p>
                 </div>
                 <div class="stat-card">
-                    <h4>$<?php echo number_format($completed_count * 50, 0); ?></h4>
+                    <h4>XAF<?php echo number_format($completed_count * 50, 0); ?></h4>
                     <p>Est. Earnings</p>
                 </div>
             </div>
@@ -233,7 +381,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             
             <?php if ($available_jobs_result->num_rows > 0): ?>
-                <div class="jobs-container">
+                <div class="jobs-grid">
                     <?php while ($job = $available_jobs_result->fetch_assoc()): ?>
                         <div class="job-card">
                             <div class="job-header">
@@ -241,7 +389,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <span class="service-icon"><?php echo getServiceIcon($job['service']); ?></span>
                                     <div>
                                         <h4><?php echo htmlspecialchars(ucfirst($job['service'])); ?></h4>
-                                        <p class="customer-name">👤 <?php echo htmlspecialchars($job['user_name']); ?></p>
+                                        <p class="customer-name"><ion-icon name="person-outline"></ion-icon> <?php echo htmlspecialchars($job['user_name']); ?></p>
                                     </div>
                                 </div>
                                 <div class="job-priority">
@@ -254,20 +402,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="job-details">
                                 <div class="detail-item">
-                                    <span class="detail-label">📅 Date:</span>
+                                    <span class="detail-label"><ion-icon name="calendar-outline"></ion-icon> Date:</span>
                                     <span><?php echo date('M d, Y', strtotime($job['date'])); ?></span>
                                 </div>
                                 <div class="detail-item">
-                                    <span class="detail-label">⏰ Time:</span>
+                                    <span class="detail-label"><ion-icon name="time-outline"></ion-icon> Time:</span>
                                     <span><?php echo date('h:i A', strtotime($job['time'])); ?></span>
                                 </div>
                                 <div class="detail-item">
-                                    <span class="detail-label">📞 Phone:</span>
+                                    <span class="detail-label"><ion-icon name="call-outline"></ion-icon> Phone:</span>
                                     <span><?php echo htmlspecialchars($job['user_phone'] ?: 'Not provided'); ?></span>
                                 </div>
                                 <div class="detail-item">
-                                    <span class="detail-label">💰 Est. Pay:</span>
-                                    <span class="pay-amount">$<?php echo rand(30, 80); ?></span>
+                                    <span class="detail-label"><ion-icon name="cash-outline"></ion-icon> Est. Pay:</span>
+                                    <span class="pay-amount"><?php 
+                                        $is_urgent = isUrgentJob($job['date']);
+                                        $pricing = getServicePrice($job['service'], $is_urgent);
+                                        echo $pricing['formatted_currency'];
+                                    ?></span>
                                 </div>
                             </div>
                             <div class="job-actions">
@@ -289,7 +441,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             <?php else: ?>
                 <div class="empty-state">
-                    <div class="empty-icon">🔍</div>
+                    <div class="empty-icon"><ion-icon name="search-outline"></ion-icon></div>
                     <h4>No available jobs</h4>
                     <p>No new jobs matching your skills right now. Check back later!</p>
                     <button class="btn" onclick="refreshJobs()">Refresh Jobs</button>
@@ -339,6 +491,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </form>
                                     <?php elseif ($job['status'] == 'completed'): ?>
                                         <span class="text-success">✓ Completed</span>
+                                        <br><br>
+                                        <a href="rate_worker.php?worker=<?php echo urlencode($worker_email); ?>&booking=<?php echo $job['id']; ?>" class="btn btn-primary btn-sm">
+                                            ⭐ Rate Worker
+                                        </a>
                                     <?php endif; ?>
                                 </td>
                             </tr>

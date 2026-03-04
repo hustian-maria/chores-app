@@ -30,7 +30,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <body>
             <header>
                 <div class="header-content">
-                    <div class="logo">🏠 Household Services - Admin</div>
+                    <div class="logo"> Household Services - Admin</div>
                 </div>
             </header>
 
@@ -58,15 +58,14 @@ if (!isset($_SESSION['admin_logged_in'])) {
     }
 }
 
-// Get statistics
 $users_count = $db->query("SELECT COUNT(*) as count FROM users")->fetch_assoc()['count'];
 $workers_count = $db->query("SELECT COUNT(*) as count FROM workers")->fetch_assoc()['count'];
 $bookings_count = $db->query("SELECT COUNT(*) as count FROM bookings")->fetch_assoc()['count'];
 
-// Get all users
+// get all users
 $users_query = $db->query("SELECT * FROM users ORDER BY created_at DESC");
 
-// Get all workers
+// get all workers
 $workers_query = $db->query("SELECT * FROM workers ORDER BY created_at DESC");
 
 // Get all bookings with user and worker info
@@ -110,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">🏠 Household Services - Admin</div>
+            <div class="logo">Household Services - Admin</div>
             <nav>
                 <ul>
                     <li><a href="logout.php">Logout</a></li>
@@ -127,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-        <!-- Statistics -->
+
         <div class="stats-grid">
             <div class="stat-card">
                 <h4><?php echo $users_count; ?></h4>
@@ -143,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-        <!-- Users Management -->
+        <!-- user management -->
         <div class="card">
             <h3>Users Management</h3>
             <table class="table">
@@ -178,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </table>
         </div>
 
-        <!-- Workers Management -->
+        <!-- worker management -->
         <div class="card">
             <h3>Workers Management</h3>
             <table class="table">
@@ -215,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </table>
         </div>
 
-        <!-- Bookings Management -->
+        <!-- bookings Management -->
         <div class="card">
             <h3>Bookings Management</h3>
             <table class="table">
