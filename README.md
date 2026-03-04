@@ -97,13 +97,16 @@ chores_app/
 - House Cleaning
 - Cooking
 - Laundry
-- Gardening
-- Plumbing
-- Electrical Work
-- Carpentry
-- Painting
-- Moving Help
-- Pet Care
+- Minor repairs
+-Grocery runs
+- Babysitting
+
+
+
+
+
+
+
 
 ## Security Features
 
@@ -135,7 +138,7 @@ All styles are in `style.css`. The CSS uses:
 
 ## Browser Support
 
-- Chrome/Chromium 60+
+- Chrome
 - Firefox 55+
 - Safari 12+
 - Edge 79+
