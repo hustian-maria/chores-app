@@ -5,10 +5,10 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error); 
 }
 
-// Include pricing helper
+
 require_once 'pricing_helper.php';
 
-// Start session
+
 session_start();
 
 // Check if user is logged in
@@ -17,14 +17,14 @@ if (!isset($_SESSION['user_email'])) {
     exit();
 }
 
-// Get session data
+
 $user_email = $_SESSION['user_email'];
 $selected_service = $_SESSION['selected_service'] ?? '';
 $selected_date = $_SESSION['selected_date'] ?? '';
 $selected_time = $_SESSION['selected_time'] ?? '';
 $selected_worker = $_SESSION['selected_worker'] ?? '';
 
-// Validate required data
+
 if (empty($selected_service) || empty($selected_date) || empty($selected_time) || empty($selected_worker)) {
     header("Location: register.php");
     exit();
@@ -63,7 +63,7 @@ $worker_name = $worker_result->num_rows > 0 ? $worker_result->fetch_assoc()['nam
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Confirmation - Household Services</title>
+    <title>Booking Confirmation - HomeClean</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -71,7 +71,7 @@ $worker_name = $worker_result->num_rows > 0 ? $worker_result->fetch_assoc()['nam
 <body>
     <header>
         <div class="header-content">
-            <div class="logo"><ion-icon name="home-outline"></ion-icon> Household Services</div>
+            <div class="logo"><ion-icon name="home-outline"></ion-icon> HomeClean</div>
             <nav>
                 <ul>
                     <li><a href="user_dashboard.php">Dashboard</a></li>

@@ -1,14 +1,14 @@
 <?php
-// Database connection
+
 $db = new mysqli("localhost", "root", "", "chores_app");
 if ($db->connect_error) { 
     die("Connection failed: " . $db->connect_error); 
 }
 
-// Include pricing helper
+
 require_once 'pricing_helper.php';
 
-// Start session
+
 session_start();
 
 // Check if user is logged in
@@ -74,7 +74,7 @@ function getServiceIcon($service) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Worker - Household Services</title>
+    <title>Select Worker - HomeClean</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -239,7 +239,7 @@ function getServiceIcon($service) {
 <body>
     <header>
         <div class="header-content">
-            <div class="logo"><ion-icon name="home-outline"></ion-icon> Household Services</div>
+            <div class="logo"><ion-icon name="home-outline"></ion-icon> HomeClean</div>
             <nav>
                 <ul>
                     <li><a href="user_dashboard.php">Dashboard</a></li>

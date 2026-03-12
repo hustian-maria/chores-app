@@ -24,13 +24,13 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Admin Login - Household Services</title>
+            <title>Admin Login - HomeClean</title>
             <link rel="stylesheet" href="style.css">
         </head>
         <body>
             <header>
                 <div class="header-content">
-                    <div class="logo"> Household Services - Admin</div>
+                    <div class="logo"> HomeClean - Admin</div>
                 </div>
             </header>
 
@@ -103,13 +103,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Household Services</title>
+    <title>Admin Dashboard - HomeClean</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">Household Services - Admin</div>
+            <div class="logo">HomeClean - Admin</div>
             <nav>
                 <ul>
                     <li><a href="logout.php">Logout</a></li>

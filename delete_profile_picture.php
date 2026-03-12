@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query->bind_param("s", $email);
         
         if ($update_query->execute()) {
-            // Clear session
+           
             unset($_SESSION[$user_type . '_profile_picture']);
             
             header("Content-Type: application/json");

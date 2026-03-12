@@ -1,11 +1,10 @@
 <?php
-// Database connection
+
 $db = new mysqli("localhost", "root", "", "chores_app");
 if ($db->connect_error) { 
     die("Connection failed: " . $db->connect_error); 
 }
 
-// Start session
 session_start();
 
 // Initialize message variables
@@ -126,13 +125,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration - Household Services</title>
+    <title>Registration - HomeClean</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">🏠 Household Services</div>
+            <div class="logo"> HomeClean</div>
             <nav>
                 <ul>
                     <li><a href="user_login.html">User Login</a></li>

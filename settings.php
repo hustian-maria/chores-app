@@ -44,12 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
     
-    // Validate required fields
+   
     if (empty($name)) {
         $message = "Name is required.";
         $message_type = "error";
     } else {
-        // Update basic info
+        
         if ($is_worker) {
             $update_query = $db->prepare("UPDATE workers SET name = ?, phone = ? WHERE email = ?");
             $update_query->bind_param("sss", $name, $phone, $email);
@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - Household Services</title>
+    <title>Settings - HomeClean</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -230,7 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">🏠 Household Services</div>
+            <div class="logo"> HomeClean</div>
             <nav>
                 <ul>
                     <li><a href="<?php echo $dashboard_url; ?>">Dashboard</a></li>
